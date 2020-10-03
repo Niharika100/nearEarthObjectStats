@@ -9,10 +9,13 @@ const from_date = urlParams.get('Sdate');
 // Get the value of Sdate parameter from URL
 const to_date = urlParams.get('Edate');
 
-console.log("Fdate: " +from_date+ " TDate: "+to_date);
+console.log("Fdate: " + from_date + " TDate: " + to_date);
 
+// variable
+nearestAsteroid = [];
+fastestAsteroid = [];
 // API data retrieval
-const api_url = 'https://api.nasa.gov/neo/rest/v1/feed?start_date='+from_date+'&end_date='+to_date+'&api_key=p3YU2TsqQenazSQjiPCuY8vHyrbmBjQfzJY7wYZu';
+const api_url = 'https://api.nasa.gov/neo/rest/v1/feed?start_date=' + from_date + '&end_date=' + to_date + '&api_key=p3YU2TsqQenazSQjiPCuY8vHyrbmBjQfzJY7wYZu';
 
 // Display the Chart
 doChart();
@@ -41,6 +44,8 @@ async function doChart() {
 async function getData() {
   const no_of_objects = [];
   const date = [];
+  const Heights = [];
+  const Asteroids = [];
   const response = await fetch(api_url);
 
   const data = await response.json();
@@ -50,9 +55,50 @@ async function getData() {
   console.log(date_array);
 
   for (x in date_array) {
+    // number of objects each day
     no_of_objects.push(date_array[x].length);
     date.push(x);
-  }
-  return { no_of_objects, date };
 
+    // for storing the heights and the speed
+    for (y in date_array[x]) {
+      Heights.push(date_array[x][y].absolute_magnitude_h);
+      Asteroids.push(date_array[x][y].close_approach_data[0].relative_velocity.kilometers_per_hour);
+    }
+  }
+
+  // find minimum height logic
+  Array.min = function (Heights) {
+    return Math.min.apply(Math, Heights);
+  };
+  var minimum = Array.min(Heights);
+
+  // find maximum speed logic
+  Array.max = function (Asteroids) {
+    return Math.max.apply(Math, Asteroids);
+  };
+  var maximum = Array.max(Asteroids);
+
+
+  // find minimum height object and max speed object logic
+  for (x in date_array) {
+    for (y in date_array[x]) {
+      if (date_array[x][y].absolute_magnitude_h === minimum) {
+        nearestAsteroid.push(date_array[x][y].name);
+      }
+      if ((date_array[x][y].close_approach_data[0].relative_velocity.kilometers_per_hour) == maximum) {
+        fastestAsteroid.push(date_array[x][y].name);
+      }
+    }
+  }
+  // console
+  console.log('This is fastest asteroid');
+  console.log(this.fastestAsteroid);
+  console.log('This is nearest asteroid');
+  console.log(this.nearestAsteroid);
+
+  // display
+  document.getElementById("fastest").innerHTML = `Fastest Asteroid : ${fastestAsteroid}`
+  document.getElementById("nearest").innerHTML = `Nearest Asteroid: ${nearestAsteroid}`
+  
+  return { no_of_objects, date };
 }
