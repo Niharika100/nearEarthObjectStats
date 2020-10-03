@@ -16,12 +16,12 @@
   <title>Awishcar</title>
 </head>
 
-<body class = "bg-light">
-  <h1 class="alert alert-success" style ="text-align: center;">Neo Aestroid Stats</h1>
+<body class="bg-light">
+  <h1 class="alert alert-success" style="text-align: center;">Neo Aestroid Stats</h1>
   <!-- Form for the start and end Date -->
-  <div class = "d-flex flex-row">
+  <div class="d-flex flex-row">
     <div class="card bg-secondary mb-6 mx-md-5" style="max-width: 18rem;">
-      <div class="card-header">Enter the Start date and the End Date(7 days within Start Date)</div>
+      <div class="card-header">Enter the Start date and the End Date(7 days within Satrt Date)</div>
       <div class="card-body w-50">
         <form id="form1">
           <label for="birthday" class="mr-4 badge badge-primary">Start Date:</label>
@@ -32,11 +32,18 @@
         </form>
       </div>
     </div>
-  <!-- Canvas for the chart representation -->
+    <!-- Canvas for the chart representation -->
     <div class="w-50 mx-md-5">
       <canvas id="chart" width="200" height="100"></canvas>
+      <!-- Fastest and Nearest Object Data -->
+      <div>
+        <h6 id = "fastest">Fastest Asteroid : </h6>
+        <h6 id="nearest">Nearest Asteroid : </h6>
+      </div>
     </div>
   </div>
+  
+
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
